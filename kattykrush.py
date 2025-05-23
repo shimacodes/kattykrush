@@ -3,24 +3,23 @@ import random
 import sys
 import math
 
-# Initialize Pygame
 pygame.init()
 
-# Constants
+# Les variables de départ
 WIDTH, HEIGHT = 600, 600
 GRID_SIZE = 4
-SPACING = 20  # Space between tiles
+SPACING = 20
 NUM_CAT_TYPES = 4
 CAT_SIZE = 75
 TILE_SIZE = CAT_SIZE
 
-# Centering grid
+# La jooolie grille de chatons
 GRID_WIDTH = GRID_SIZE * TILE_SIZE + (GRID_SIZE - 1) * SPACING
 GRID_HEIGHT = GRID_SIZE * TILE_SIZE + (GRID_SIZE - 1) * SPACING
 GRID_X_OFFSET = (WIDTH - GRID_WIDTH) // 2
 GRID_Y_OFFSET = (HEIGHT - GRID_HEIGHT) // 2
 
-# Game variables
+# Les variables pour le jeu en lui-même
 cat_grid = [[random.randint(0, NUM_CAT_TYPES - 1) for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
 selected_cat_pos = None
 score = 0
@@ -29,7 +28,7 @@ game_over = False
 booster_pos = None
 booster_active = False
 
-# Load cat images and resize
+# Les chats exotiques importés
 cat_images = [pygame.transform.scale(pygame.image.load(path), (CAT_SIZE, CAT_SIZE)) for path in [
     "cat heads/cat blanc.png",
     "cat heads/cat noir.png",
@@ -38,16 +37,15 @@ cat_images = [pygame.transform.scale(pygame.image.load(path), (CAT_SIZE, CAT_SIZ
 ]]
 booster_image = pygame.transform.scale(pygame.image.load("boosters/Paw.png"), (CAT_SIZE, CAT_SIZE))
 
-# Setup screen
+# Les variables du menu
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Katty Krush")
 font = pygame.font.Font("space_invaders.ttf", 30)
 TITLE = pygame.font.Font("space_invaders.ttf", 50)
 clock = pygame.time.Clock()
-
-# Menu button
 start_button = pygame.Rect(WIDTH // 2 - 75, 300, 150, 50)
 
+#La grille de chatons est dessinée. 
 def draw_grid():
     for row in range(GRID_SIZE):
         for col in range(GRID_SIZE):
@@ -57,7 +55,7 @@ def draw_grid():
                 screen.blit(booster_image, (x, y))
             else:
                 cat_type = cat_grid[row][col]
-                if selected_cat_pos == (row, col):
+                if selected_cat_pos == (row, col):#Chaque chat a son moment de gloire.
                     time_ms = pygame.time.get_ticks()
                     scale_factor = 1.2 + 0.1 * math.sin(time_ms / 150)
                     scaled_size = int(CAT_SIZE * scale_factor)
@@ -102,7 +100,7 @@ def swap_cats(pos1, pos2):
         booster_pos = None
         booster_active = False
     else:
-        cat_grid[r1][c1], cat_grid[r2][c2] = cat_grid[r2][c2], cat_grid[r1][c1]
+        cat_grid[r1][c1], cat_grid[r2][c2] = cat_grid[r2][c2], cat_grid[r1][c1]#votre méthode était plus logique monsieur, vous avez gagné le badge de "Neko-Sensei"
 
 def handle_matches():
     global score, booster_pos, booster_active
